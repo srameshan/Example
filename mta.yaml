@@ -1,0 +1,41 @@
+ID: SR_EXAMPLE
+_schema-version: '2.1'
+description: Example XSA project
+version: 0.0.1
+
+modules:
+ - name: DB
+   type: hdb
+   path: DB
+   requires:
+    - name: hdi_DB
+      properties:
+        TARGET_CONTAINER: ~{hdi-container-name}
+
+
+
+    - name: cross-container-service-1
+      group: SERVICE_REPLACEMENTS
+
+      properties:
+        key: ServiceName_1
+        service: ~{the-service-name}
+                          
+
+
+resources:
+ - name: hdi_DB
+   parameters:
+      config:
+         schema: SREXAMPLE
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container
+
+ - name: cross-container-service-1
+   parameters:
+      service-name: SFLIGHT
+   properties:
+      the-service-name: ${service-name}
+   type: org.cloudfoundry.existing-service
+
